@@ -1,0 +1,17 @@
+<div id="text1" class="header">Email<br>
+    <label>
+      <input type="text" name="login" [(ngModel)]=_login>
+    </label><br>
+  </div>
+  <div id="text2" class="header">Password<br>
+    <label>
+      <input type="password" name="password" [(ngModel)]=_password>
+    </label><br>
+  </div>
+  <div id="join" class="header">
+    <button pButton type="button" class="ui-button-raised ui-button-rounded" label="Log In" (click)="logIn(_login, _password)"></button>
+  </div>
+  <div class="header" id="vk">
+    <button pButton type="button" class="ui-button-raised ui-button-rounded" label="VK"
+onclick="location.href='https://oauth.vk.com/authorize?client_id=6656136&display=page&redirect_uri=http://localhost:4200/page2&scope=&response_type=token&v=5.80'"></button>
+  </div>
