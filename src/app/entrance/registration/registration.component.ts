@@ -4,14 +4,13 @@ import {
   ElementRef,
   HostListener,
 } from '@angular/core';
-import {User} from "./User";
+import {User} from "../../common/User";
 import {HttpService} from "../../common/http.service";
 
 @Component({
   selector: 'app-registration',
   templateUrl: './registration.component.html',
   styleUrls: ['./registration.component.css'],
-  providers: [HttpService]
 })
 export class RegistrationComponent implements OnInit {
 
@@ -83,6 +82,6 @@ export class RegistrationComponent implements OnInit {
       name: name,
       surname: surname
     };
-    this.httpService.signUp(request).subscribe();
+    this.httpService.signUp(request).subscribe(req=>{},error1 => console.log(error1));
   }
 }

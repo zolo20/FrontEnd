@@ -1,42 +1,47 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Constants} from "./constants";
-import {EMPTY, Observable, throwError} from 'rxjs';
-import {map} from 'rxjs/operators';
-import {catchError} from "rxjs/internal/operators";
 import {Router} from "@angular/router";
+import {ErrorHandler} from "./error-handler";
 
 @Injectable()
 export class HttpService {
 
-  headers = new Headers({
-    'Content-Type': 'application/x-www-form-urlencoded'
 
-  });
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(private http: HttpClient, private router: Router, private errHandler: ErrorHandler) {
   }
 
-  // http://localhost:8080/ncedu/task9       NCEdu.Server.JAVA
-  signUp(data: any) {
-    return this.http.post(Constants.SIGN_UP_URL, data, {observe: 'response'});
+  signUp(request: any) {
+    return this.http.post(Constants.SIGN_UP_URL, JSON.stringify(request),
+      {headers: {'Content-Type': 'application/json'}, observe:"response"});
   }
 
-  logIn(login: string, password: string): Observable<boolean> {
-    return this.http.post<boolean>(
-      Constants.LOG_IN_URL,
-      JSON.stringify({login: login, password: password}),
-      {observe: 'response'})
-      .pipe(
-        map(resp => {
-          localStorage.setItem('access_token', resp.headers.get(Constants.TOKEN_NAME));
-          localStorage.setItem('role', resp.headers.get(Constants.ROLE));
-          return true;
-        })
-      )
+  logIn(request: any) {
+    return this
+      .http.post(Constants.LOG_IN_URL, JSON.stringify(request),{observe: 'response'})
+      .subscribe(resp => {
+        this.router.navigateByUrl("/app");
+        localStorage.setItem("token",resp.headers.get("Authorization"));
+        localStorage.setItem("role",resp.headers.get("Role"));
+      }, err => {
+          this.errHandler.handleAuthError(err);
+      })
   };
 
-  public get loggedIn(): boolean {
-    return (localStorage.getItem('access_token') !== null);
+  req() {
+    this.http
+      .get(Constants.TEST_URL).subscribe(resp => {
+    }, err => {
+      this.errHandler.handleAuthError(err);
+    });
+  }
+
+  getToken(): string {
+    return localStorage.getItem("token");
+  }
+
+  getRole(): string {
+    return localStorage.getItem("role");
   }
 }

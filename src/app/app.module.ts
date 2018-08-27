@@ -4,21 +4,24 @@ import { NgModule } from '@angular/core';
 
 import {AccordionModule} from 'primeng/accordion';
 import {ButtonModule} from 'primeng/button';
-import {RouterModule} from "@angular/router";
+import {Router, RouterModule} from "@angular/router";
 
 import {AppComponent} from './app.component';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {ConfirmEqualValidatorDirective} from "./entrance/registration/confirm-equal-validator.directive";
 import { EntriesComponent } from './entrance/entries/entries.component';
 import { RegistrationComponent } from './entrance/registration/registration.component';
 import { InformationComponent } from './entrance/information/information.component';
 import {TestPage2Component} from "./test-page2/test-page2.component";
+import {TokenInterceptorService} from "./common/token.service";
 import { EntranceComponent } from './entrance/entrance.component';
 import { LoginComponent } from './login/login.component';
-import { authGuard } from "./common/auth-guard.service";
+import {HttpService} from "./common/http.service";
+import {authGuard} from "./common/auth-guard.service";
+import {ErrorHandler} from "./common/error-handler";
 
 const routes = [
-  { path: '**', redirectTo: '/home', pathMatch: 'full' },
+  {path: '', redirectTo: '/home', pathMatch: 'full' },
   {path: 'home', component: EntranceComponent },
   {path: 'login', component: LoginComponent },
   {path: 'app', component: TestPage2Component, canActivate: [authGuard] }
@@ -43,7 +46,12 @@ const routes = [
     HttpClientModule,
     RouterModule.forRoot(routes)
   ],
-  providers: [authGuard],
+  providers: [
+    {provide: authGuard, useClass: authGuard},
+    {provide: HttpService, useClass: HttpService},
+    {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true, deps: [Router]},
+    {provide: ErrorHandler, useClass: ErrorHandler}
+    ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

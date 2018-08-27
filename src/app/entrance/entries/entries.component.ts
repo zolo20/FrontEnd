@@ -4,6 +4,8 @@ import { first } from 'rxjs/operators';
 import {Router} from "@angular/router";
 import {EMPTY, throwError} from "rxjs/index";
 import {catchError} from "rxjs/internal/operators";
+import {HttpErrorResponse} from "@angular/common/http";
+import {User} from "../../common/User";
 
 
 
@@ -11,21 +13,21 @@ import {catchError} from "rxjs/internal/operators";
   selector: 'app-entries',
   templateUrl: './entries.component.html',
   styleUrls: ['./entries.component.css'],
-  providers: [HttpService]
-
 })
 export class EntriesComponent implements OnInit {
 
-  _login: any;
-  _password: any;
+  user: User = new User();
 
   constructor(private httpService: HttpService, private router: Router) { }
 
   ngOnInit(){
-    console.log('hi')
   }
 
   logIn(login: string, password: string) {
-    this.httpService.logIn(login, password).subscribe();
+    const request = {
+      login: login,
+      password: password,
+    };
+    this.httpService.logIn(request);
   }
 }
