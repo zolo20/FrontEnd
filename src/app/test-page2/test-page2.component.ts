@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {HttpService} from "../common/http.service";
 import {Router} from "@angular/router";
+import {ErrorHandler} from "../common/error-handler";
 
 @Component({
   selector: 'app-test-page2',
@@ -9,15 +10,17 @@ import {Router} from "@angular/router";
 })
 export class TestPage2Component implements OnInit {
 
-  constructor(private httpService: HttpService, private router: Router) { }
+  constructor(private httpService: HttpService, private router: Router,private errHandler: ErrorHandler) { }
 
   ngOnInit() {
-    this.httpService.req();
+    this.httpService.testTokenExpiration().subscribe(resp => {
+    }, err => {
+      this.errHandler.handleAuthError(err);
+    });
   }
 
   logout(){
     localStorage.removeItem("token");
-    localStorage.removeItem("role");
     this.router.navigateByUrl("/home");
   }
 }

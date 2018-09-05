@@ -14,18 +14,23 @@ export class TokenInterceptorService implements HttpInterceptor {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (req.url !== Constants.SIGN_UP_URL) {
-      if (req.url !== Constants.LOG_IN_URL && this.authService.getToken() !== null) {
+    if (req.url !== Constants.LOG_IN_URL && req.url !== Constants.SIGN_UP_URL
+      && req.url != Constants.FB_URL) {
+      if (HttpService.getToken() !== null) {
         req = req.clone({
           setHeaders: {
-            Authorization: this.authService.getToken(),
-            Role: this.authService.getRole()
+            Authorization: HttpService.getToken(),
           }
         });
       }
-      return next.handle(req).pipe(catchError(err => this.errHandler.handleAuthError(err)));
-    } else {
-      return next.handle(req);
+      if (HttpService.getTokenResetPassword() !== null) {
+        req = req.clone({
+          setHeaders: {
+            Authorization: HttpService.getTokenResetPassword(),
+          }
+        });
+      }
     }
+    return next.handle(req);
   }
 }

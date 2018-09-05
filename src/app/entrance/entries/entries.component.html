@@ -1,21 +1,24 @@
-<div id="text1" class="header">Email<br>
+<div id="text1" class="header">Email
+  <br>
   <label>
-    <input id="login" type="text" name="login" [(ngModel)]=user.login #login="ngModel" required>
-  </label><br>
+    <input id="mail" type="text" name="mail" [(ngModel)]="user.email" #mail="ngModel" required>
+  </label>
+  <br>
 </div>
 
-<div id="text2" class="header">Password<br>
+<div id="text2" class="header">Password
+  <br>
   <label>
     <input type="password" name="password" [(ngModel)]="user.password" #password="ngModel" required>
-  </label><br>
+  </label>
+  <br>
 </div>
 
 <div id="join" class="header">
   <button pButton type="button" class="ui-button-raised ui-button-rounded" label="Log In"
-          (click)="logIn(login.value, password.value)"></button>
+          (click)="logIn(mail.value, password.value)"></button>
 </div>
 
-<div class="header" id="vk">
-  <button pButton type="button" class="ui-button-raised ui-button-rounded" label="VK"
-          onclick="location.href='https://oauth.vk.com/authorize?client_id=6656136&display=page&redirect_uri=http://localhost:4200/page2&scope=&response_type=token&v=5.80'"></button>
+<div id="recoveryPass" class="header">
+  <a (click)="showDialog()">Forgot your password?</a>
 </div>

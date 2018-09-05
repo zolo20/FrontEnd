@@ -26,10 +26,23 @@
   height:22px;
 }
 
-#vk{
-  left: 1170px;
-  top: 39px;
-  height: 22px;
+#recoveryPass{
+  left:895px;
+  top:70px;
+  font-size: small;
+  cursor: pointer;
+}
+
+a:link,
+a:visited,
+a:active{
+  text-decoration: none;
+  color: white;
+}
+
+a:hover {
+  text-decoration: underline;
+  color: white;
 }
 
 

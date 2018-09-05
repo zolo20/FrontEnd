@@ -1,12 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, Injectable, OnInit, Output} from '@angular/core';
 import {HttpService} from "../../common/http.service";
-import { first } from 'rxjs/operators';
-import {Router} from "@angular/router";
-import {EMPTY, throwError} from "rxjs/index";
-import {catchError} from "rxjs/internal/operators";
-import {HttpErrorResponse} from "@angular/common/http";
+import {PRIMARY_OUTLET, Router, UrlSegment, UrlSegmentGroup, UrlTree} from "@angular/router";
 import {User} from "../../common/User";
-
 
 
 @Component({
@@ -17,17 +12,26 @@ import {User} from "../../common/User";
 export class EntriesComponent implements OnInit {
 
   user: User = new User();
+  display: boolean = false;
+  @Output() active: EventEmitter<any> = new EventEmitter();
 
-  constructor(private httpService: HttpService, private router: Router) { }
 
-  ngOnInit(){
+  constructor(private httpService: HttpService, private router: Router) {
   }
 
-  logIn(login: string, password: string) {
+  ngOnInit() {
+  }
+
+  logIn(email: string, password: string) {
     const request = {
-      login: login,
+      email: email,
       password: password,
     };
     this.httpService.logIn(request);
+  }
+
+  showDialog() {
+    this.display = true;
+    this.active.emit(this.display);
   }
 }
