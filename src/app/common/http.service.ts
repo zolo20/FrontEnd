@@ -1,8 +1,9 @@
-import {EventEmitter, Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
 import {Constants} from "./constants";
 import {Router} from "@angular/router";
 import {ErrorHandler} from "./error-handler";
+import {Events} from './Events';
 
 @Injectable()
 export class HttpService {
@@ -16,8 +17,7 @@ export class HttpService {
   }
 
   logIn(request: any) {
-    return this
-      .http.post(Constants.LOG_IN_URL, JSON.stringify(request), {observe: 'response'})
+    this.http.post(Constants.LOG_IN_URL, JSON.stringify(request), {observe: 'response'})
       .subscribe(resp => {
         localStorage.setItem("token", resp.headers.get(Constants.TOKEN_NAME));
         this.router.navigateByUrl("/app");
@@ -25,6 +25,25 @@ export class HttpService {
         this.errHandler.handleAuthError(err);
       })
   };
+
+  getEvents(){
+    return this.http.get(Constants.GET_VERIFY_EVENTS_URL)
+      .toPromise()
+      .then(res => <Events[]> res)
+      .then(data => { return data; });
+  }
+
+  putStatusEvent(request: any){
+    return this.http.put(Constants.UPDATE_STATUS_EVENTS_URL, JSON.stringify(request), {
+      headers: {'Content-Type': 'application/json'},
+      observe: 'response'
+    });
+  }
+
+  addEvent(request: any) {
+    return this.http.post(Constants.ADD_EVENTS_URL, JSON.stringify(request),
+      {headers: {'Content-Type': 'application/json'}, observe: "response"});
+  }
 
   sendEmail(request: any) {
     return this
@@ -34,16 +53,12 @@ export class HttpService {
       });
   }
 
-  joinFacebook() {
-    return this.http.get(Constants.FB_URL);
-  }
-
   testTokenExpiration() {
     return this.http.get(Constants.TEST_URL);
   }
 
   putPassword(request: any) {
-    this.http.put(Constants.RESET_PASSWORD_URL, request, {
+    this.http.put(Constants.RESET_PASSWORD_URL, JSON.stringify(request), {
       headers: {'Content-Type': 'application/json'},
       observe: 'response'
     }).subscribe(res=>{

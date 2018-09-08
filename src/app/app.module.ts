@@ -5,7 +5,7 @@ import { NgModule } from '@angular/core';
 import {AccordionModule} from 'primeng/accordion';
 import {ButtonModule} from 'primeng/button';
 import {DialogModule} from 'primeng/dialog';
-import {Router, RouterModule} from "@angular/router";
+import {RouterModule} from "@angular/router";
 
 import {AppComponent} from './app.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
@@ -23,12 +23,17 @@ import {ErrorHandler} from "./common/error-handler";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {ToastModule} from 'primeng/toast';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { AdminPageComponent } from './admin-page/admin-page.component';
+import {TableModule} from 'primeng/table';
+import {GMapModule} from 'primeng/gmap';
+import {MessageService} from 'primeng/api';
 
 const routes = [
   {path: '', redirectTo: '/home', pathMatch: 'full' },
   {path: 'home', component: EntranceComponent },
   {path: 'login', component: LoginComponent },
   {path: 'forgot-password/:token', component: ResetPasswordComponent },
+  {path: 'admin', component: AdminPageComponent},
   {path: 'app', component: TestPage2Component, canActivate: [authGuard] },
   {path: '**', redirectTo: '/home', pathMatch: 'full' }
 
@@ -44,7 +49,8 @@ const routes = [
     TestPage2Component,
     EntranceComponent,
     LoginComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
+    AdminPageComponent
   ],
   imports: [
     BrowserModule,
@@ -55,6 +61,8 @@ const routes = [
     DialogModule,
     BrowserAnimationsModule,
     ToastModule,
+    TableModule,
+    GMapModule,
     RouterModule.forRoot(routes)
   ],
   providers: [

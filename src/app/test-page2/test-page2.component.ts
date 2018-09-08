@@ -15,6 +15,7 @@ export class TestPage2Component implements OnInit {
   ngOnInit() {
     this.httpService.testTokenExpiration().subscribe(resp => {
     }, err => {
+      localStorage.removeItem("token");
       this.errHandler.handleAuthError(err);
     });
   }
