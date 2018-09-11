@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Observable, throwError, of} from "rxjs/index";
+import {Observable, throwError, of} from 'rxjs';
 import {HttpErrorResponse} from "@angular/common/http";
 import {Router} from "@angular/router";
 
@@ -9,10 +9,15 @@ export class ErrorHandler{
   constructor( private router: Router) {
   }
 
-  public handleAuthError(err: HttpErrorResponse): Observable<any> {
+  public handleAuthError(err: HttpErrorResponse, marker: boolean): Observable<any> {
     if (err.status === 401 || err.status === 403) {
-      this.router.navigateByUrl("/login");
-      return of(err.message);
+      if (marker == false) {
+        return of(err.message);
+      } else {
+        localStorage.removeItem("token");
+        this.router.navigateByUrl("/home");
+        return of(err.message);
+      }
     }
     return throwError(err);
   }

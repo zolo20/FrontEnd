@@ -1,9 +1,7 @@
 import {Component, ElementRef, HostListener, OnInit} from '@angular/core';
 import {User} from "../common/User";
 import {ActivatedRoute, Router} from "@angular/router";
-import {Constants} from "../common/constants";
 import {HttpService} from "../common/http.service";
-import {of} from "rxjs/index";
 
 @Component({
   selector: 'app-reset-password',
@@ -17,8 +15,8 @@ export class ResetPasswordComponent implements OnInit {
   showErrPass: boolean;
   showErrConfPass: boolean;
   press: boolean;
-  displayErr: boolean = false;
-  displayGood: boolean = false;
+  displayErr: boolean;
+  displayGood: boolean;
 
   constructor(private eref: ElementRef, private activatedRoute: ActivatedRoute,private httpService: HttpService , private router: Router) {
   }
@@ -26,7 +24,6 @@ export class ResetPasswordComponent implements OnInit {
   ngOnInit() {
     localStorage.setItem("token_reset_password", this.activatedRoute.snapshot.url[1].path);
     this.httpService.testTokenExpiration().subscribe(resp => {
-      this.displayGood = true;
     }, err => {
       if (err.status === 401 || err.status === 403) {
         this.displayErr=true;
@@ -51,10 +48,19 @@ export class ResetPasswordComponent implements OnInit {
   }
 
   resetPassword(password:string) {
+    this.press = true;
     const request = {
       password: password,
     };
-    this.httpService.putPassword(request);
+    this.httpService.putPassword(request).subscribe(res => {
+      this.displayGood = true;
+      this.press = false;
+    }, err => {
+      if (err.status === 401 || err.status === 403) {
+        this.displayErr=true;
+      }
+      this.press = false;
+    });
   }
 
   route(){

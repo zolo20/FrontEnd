@@ -1,7 +1,11 @@
-import {Component, EventEmitter, Injectable, OnInit, Output} from '@angular/core';
-import {HttpService} from "../../common/http.service";
-import {PRIMARY_OUTLET, Router, UrlSegment, UrlSegmentGroup, UrlTree} from "@angular/router";
-import {User} from "../../common/User";
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {HttpService} from '../../common/http.service';
+import {Router} from '@angular/router';
+import {User} from '../../common/User';
+import {Constants} from '../../common/constants';
+import {MessageService} from 'primeng/api';
+import {ErrorHandler} from '../../common/error-handler';
+import {CookieService} from 'ngx-cookie-service';
 
 
 @Component({
@@ -16,7 +20,8 @@ export class EntriesComponent implements OnInit {
   @Output() active: EventEmitter<any> = new EventEmitter();
 
 
-  constructor(private httpService: HttpService, private router: Router) {
+  constructor(private httpService: HttpService, private router: Router, private cookieService: CookieService,
+              private messageService: MessageService, private errHandler: ErrorHandler) {
   }
 
   ngOnInit() {
@@ -27,7 +32,21 @@ export class EntriesComponent implements OnInit {
       email: email,
       password: password,
     };
-    this.httpService.logIn(request);
+    this.httpService.logIn(request)
+      .subscribe(response => {
+        localStorage.setItem('token', response.headers.get(Constants.TOKEN_NAME));
+        let role = this.cookieService.get('role');
+        if (role == 'ADMIN') {
+          this.router.navigateByUrl('/admin');
+        } else {
+          this.router.navigateByUrl('/app');
+        }
+      }, err => {
+        if (err.status === 401 || err.status === 403) {
+          this.messageService.add({severity: 'error', summary: 'Access', detail: 'Wrong login or password'});
+        }
+        this.errHandler.handleAuthError(err, false);
+      });
   }
 
   showDialog() {

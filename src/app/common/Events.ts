@@ -6,6 +6,7 @@ export interface Events {
   end;
   lat;
   lng;
+  categories:string[];
   location;
   description;
 }
