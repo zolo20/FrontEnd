@@ -175,58 +175,58 @@ input {
 
 #lat1 {
   left: 640px;
-  top: 182px;
+  top: 172px;
   font-size: 20px;
 }
 
 #latIn1 {
   width: 175px;
   left: 670px;
-  top: 180px;
+  top: 170px;
   font-size: 20px;
 }
 
 #lng1 {
   left: 870px;
-  top: 182px;
+  top: 172px;
   font-size: 20px;
 }
 
 #lngIn1 {
   width: 188px;
   left: 905px;
-  top: 180px;
+  top: 170px;
   font-size: 20px;
 }
 
 #categories1{
   left: 640px;
-  top: 232px;
+  top: 222px;
   font-size: 20px;
 }
 
 #categoriesIn1{
   left: 735px;
-  top: 230px;
+  top: 220px;
   font-size: 16px;
 }
 
 #location1 {
   left: 640px;
-  top: 282px;
+  top: 272px;
   font-size: 20px;
 }
 
 #locationIn1 {
   width: 368px;
   left: 725px;
-  top: 280px;
+  top: 270px;
   font-size: 20px;
 }
 
 #description1 {
   left: 640px;
-  top: 325px;
+  top: 320px;
   font-size: 20px;
 }
 
@@ -236,12 +236,12 @@ input {
   width: 452px;
   height: 140px;
   left: 640px;
-  top: 350px;
+  top: 345px;
   font-size: 20px;
 }
 
 #addEv {
-  top: 495px;
+  top: 490px;
   left: 990px;
 }
 

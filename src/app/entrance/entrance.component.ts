@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewChecked, Component, OnInit} from '@angular/core';
 import {User} from "../common/User";
 import {MessageService} from "primeng/api";
 import {HttpService} from "../common/http.service";
@@ -9,7 +9,7 @@ import {HttpService} from "../common/http.service";
   styleUrls: ['./entrance.component.css'],
   providers: [MessageService]
 })
-export class EntranceComponent implements OnInit {
+export class EntranceComponent implements OnInit{
 
   display: boolean = false;
   press: boolean = false;

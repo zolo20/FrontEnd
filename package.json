@@ -12,6 +12,7 @@
   },
   "private": true,
   "dependencies": {
+    "@agm/core": "^1.0.0-beta.3",
     "@angular/animations": "^6.0.3",
     "@angular/common": "^6.0.3",
     "@angular/compiler": "^6.0.3",
@@ -22,8 +23,9 @@
     "@angular/platform-browser-dynamic": "^6.0.3",
     "@angular/router": "^6.0.3",
     "core-js": "^2.5.4",
+    "net": "^1.0.2",
     "ngx-cookie-service": "^1.0.10",
-    "primeicons": "^1.0.0-beta.9",
+    "primeicons": "^1.0.0-beta.10",
     "primeng": "^6.0.0",
     "rxjs": "^6.0.0",
     "sockjs-client": "^1.1.5",

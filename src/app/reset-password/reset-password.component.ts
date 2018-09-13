@@ -29,7 +29,6 @@ export class ResetPasswordComponent implements OnInit {
         this.displayErr=true;
       }
     });
-    console.log(this.activatedRoute.snapshot.url[1].path);
   }
 
   @HostListener('document:click', ['$event'])

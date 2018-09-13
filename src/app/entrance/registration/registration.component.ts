@@ -2,7 +2,7 @@ import {
   Component,
   OnInit,
   ElementRef,
-  HostListener,
+  HostListener
 } from '@angular/core';
 import {User} from '../../common/User';
 import {HttpService} from '../../common/http.service';
@@ -28,8 +28,7 @@ export class RegistrationComponent implements OnInit {
   showErrConfPass: boolean;
   reqStr: any;
   isExist: boolean;
-  code: any;
-  myWindow = window;
+  win: Window;
 
   @HostListener('document:click', ['$event'])
   clickOut(event) {
@@ -43,40 +42,21 @@ export class RegistrationComponent implements OnInit {
 
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe((params: Params) => {
-      if (params['code'] != undefined) {
-        console.log(params['code']);
-        let url = 'https://graph.facebook.com/v3.1/oauth/access_token?' +
-          'client_id=' + Constants.FACEBOOK_CLIENT_ID +
-          '&redirect_uri=' + Constants.FACEBOOK_URL +
-          '&display=popup&scope=email' +
-          '&client_secret=' + Constants.FACEBOOK_SECRET +
-          '&code=' + params['code'];
-        this.httpService.requestFB(url).subscribe(res => {
-          console.log(res);
-          let obj = JSON.stringify(res);
-          let token = JSON.parse(obj).access_token;
-          let urlData = 'https://graph.facebook.com/v3.1/me?' +
-            'client_id=' + Constants.FACEBOOK_CLIENT_ID +
-            '&redirect_uri=' + Constants.FACEBOOK_URL +
-            '&display=popup' +
-            '&client_secret=' + Constants.FACEBOOK_SECRET +
-            '&code=' + params['code'] +
-            '&access_token=' + token +
-            '&fields=name,email';
-          this.httpService.requestFB(urlData).subscribe(res => {
-            console.log(res);
-            let obj = JSON.stringify(res);
-            let email = JSON.parse(obj).email;
-            let name = JSON.parse(obj).name;
-            localStorage.setItem('token', token);
-            console.log(name);
-            console.log(email);
-          });
+      if (params['email'] != undefined) {
+        const joinRequest = {
+          email: params['email'],
+        };
+        console.log(params['email']);
+        this.httpService.logIn(joinRequest).subscribe(response => {
+          localStorage.setItem('token', response.headers.get(Constants.TOKEN_NAME));
+          window.opener.location.href = this.router.navigate(['/user',this.cookieService.get('id')]);
+          window.close();
+        }, err => {
+          this.errHandler.handleAuthError(err, false);
         });
       }
     });
   }
-
 
   clickFirst() {
     this.showErrFirst = true;
@@ -135,9 +115,9 @@ export class RegistrationComponent implements OnInit {
           localStorage.setItem('token', response.headers.get(Constants.TOKEN_NAME));
           let role = this.cookieService.get('role');
           if (role == 'ADMIN') {
-            this.router.navigateByUrl('/admin');
+            this.router.navigate(['/admin',this.cookieService.get('id')]);
           } else {
-            this.router.navigateByUrl('/app');
+            this.router.navigate(['/user',this.cookieService.get('id')]);
           }
         }, err => {
           this.messageService.add({severity: 'error', summary: 'Access', detail: 'Wrong login or password'});
@@ -151,11 +131,9 @@ export class RegistrationComponent implements OnInit {
       });
   }
 
+
   joinFacebook() {
-    this.myWindow.open(
-      'https://www.facebook.com/v3.1/dialog/oauth?client_id=' + Constants.FACEBOOK_CLIENT_ID +
-      '&redirect_uri=' + Constants.FACEBOOK_URL + '&display=popup&response_type=code&scope=email',
-      '_blank', 'width=600,height=500');
+    this.win = window.open(Constants.FACEBOOK_URL, '_blank', 'width=600,height=500');
   }
 }
 

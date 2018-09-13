@@ -25,6 +25,13 @@ export class EntriesComponent implements OnInit {
   }
 
   ngOnInit() {
+    let role = this.cookieService.get('role');
+    if (localStorage.getItem('token') != null && role == 'USER') {
+      this.router.navigate(['/user',this.cookieService.get('id')]);
+    }
+    if (localStorage.getItem('token') != null && role == 'ADMIN') {
+      this.router.navigate(['/admin',this.cookieService.get('id')]);
+    }
   }
 
   logIn(email: string, password: string) {
@@ -37,9 +44,9 @@ export class EntriesComponent implements OnInit {
         localStorage.setItem('token', response.headers.get(Constants.TOKEN_NAME));
         let role = this.cookieService.get('role');
         if (role == 'ADMIN') {
-          this.router.navigateByUrl('/admin');
+          this.router.navigate(['/admin',this.cookieService.get('id')]);
         } else {
-          this.router.navigateByUrl('/app');
+          this.router.navigate(['/user',this.cookieService.get('id')]);
         }
       }, err => {
         if (err.status === 401 || err.status === 403) {

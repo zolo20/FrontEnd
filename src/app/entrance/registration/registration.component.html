@@ -103,11 +103,11 @@
       && hide && (confirmPassword.touched||confirmPassword.dirty)">
       </div>
     </div>
-    <button pButton type="button" class="ui-button-raised ui-button-success" label="Sign Up" id="signUp"
-            [disabled]="userForm.invalid"
+    <button pButton type="button" class="ui-button-raised ui-button-success" label="Sign Up"
+            icon="pi pi-user-plus" iconPos="left" [disabled]="userForm.invalid"
             (click)="registration(email.value, password.value, name.value, surname.value)"></button>
 
-    <button pButton type="button" class="ui-button-raised ui-button-rounded"
+    <button pButton type="button" icon="pi pi-user" iconPos="left" class="ui-button-raised ui-button-rounded"
             label="Sign in with Facebook" id="FB" (click)="joinFacebook()">
     </button>
   </form>

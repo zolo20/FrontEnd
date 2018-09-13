@@ -5,7 +5,7 @@ import { NgModule } from '@angular/core';
 import {AccordionModule} from 'primeng/accordion';
 import {ButtonModule} from 'primeng/button';
 import {DialogModule} from 'primeng/dialog';
-import {RouterModule} from "@angular/router";
+import {RouterModule, Routes} from '@angular/router';
 
 import {AppComponent} from './app.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
@@ -13,7 +13,6 @@ import {ConfirmEqualValidatorDirective} from "./common/confirm-equal-validator.d
 import { EntriesComponent } from './entrance/entries/entries.component';
 import { RegistrationComponent } from './entrance/registration/registration.component';
 import { InformationComponent } from './entrance/information/information.component';
-import {TestPage2Component} from "./test-page2/test-page2.component";
 import {TokenInterceptorService} from "./common/token.service";
 import { EntranceComponent } from './entrance/entrance.component';
 import {HttpService} from "./common/http.service";
@@ -30,15 +29,26 @@ import { CookieService } from 'ngx-cookie-service';
 import {MessageService} from 'primeng/api';
 import {CalendarModule} from 'primeng/calendar';
 import {MultiSelectModule} from 'primeng/multiselect';
+import { UserPageComponent } from './user-page/user-page.component';
+import {RouteInfoPanelComponent} from './user-page/panel/route-info-panel/route-info-panel.component';
+import {EventInfoPanelComponent} from './user-page/panel/event-info-panel/event-info-panel.component';
+import {EventConstructorComponent} from './user-page/event-constructor/event-constructor.component';
+import {MapContentComponent} from './user-page/map-content/map-content.component';
+import {MapComponent} from './user-page/map/map.component';
+import {DropdownModule, InputSwitchModule, InputTextareaModule, TabViewModule} from 'primeng/primeng';
+import {CommonModule} from '@angular/common';
+import {CardModule} from 'primeng/card';
+import {AgmCoreModule} from '@agm/core';
+
+
 
 const routes = [
   {path: '', redirectTo: '/home', pathMatch: 'full' },
   {path: 'home', component: EntranceComponent },
   {path: 'forgot-password/:token', component: ResetPasswordComponent },
-  {path: 'admin', component: AdminPageComponent, canActivate: [authGuardAdmin]},
-  {path: 'app', component: TestPage2Component, canActivate: [authGuard] },
+  {path: 'admin/:id', component: AdminPageComponent, canActivate: [authGuardAdmin]},
+  {path: 'user/:id', component: UserPageComponent, canActivate: [authGuard] },
   {path: '**', redirectTo: '/home', pathMatch: 'full' }
-
 ];
 
 @NgModule({
@@ -48,10 +58,15 @@ const routes = [
     RegistrationComponent,
     InformationComponent,
     ConfirmEqualValidatorDirective,
-    TestPage2Component,
     EntranceComponent,
     ResetPasswordComponent,
-    AdminPageComponent
+    AdminPageComponent,
+    UserPageComponent,
+    MapComponent,
+    MapContentComponent,
+    EventConstructorComponent,
+    EventInfoPanelComponent,
+    RouteInfoPanelComponent
   ],
   imports: [
     BrowserModule,
@@ -66,7 +81,14 @@ const routes = [
     GMapModule,
     CalendarModule,
     MultiSelectModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes),
+    BrowserModule, TabViewModule, FormsModule, HttpClientModule, CommonModule, DialogModule, BrowserAnimationsModule, DropdownModule,
+    ButtonModule, AccordionModule, InputTextareaModule, CalendarModule, MultiSelectModule, InputSwitchModule, CardModule,
+    AgmCoreModule.forRoot({apiKey: 'AIzaSyB48P592kV2b7iq71QvnmfP66CF4uqUFZ8'}),
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyB48P592kV2b7iq71QvnmfP66CF4uqUFZ8',
+      libraries: ['geometry']
+    })
   ],
   providers: [
     {provide: authGuardAdmin, useClass: authGuardAdmin},
