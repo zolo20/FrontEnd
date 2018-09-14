@@ -96,11 +96,11 @@ agm-map {
 
 #names{
   float: right;
-  margin-right: 200px;
-  margin-top: 33px;
+  margin-right: 15%;
+  margin-top: 3%;
 }
 
 #logout{
-  left:1180px;
-  top:39px;
+  left:87%;
+  top:40px;
 }
