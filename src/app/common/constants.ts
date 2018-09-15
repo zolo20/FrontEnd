@@ -10,7 +10,7 @@ export class Constants {
   public static ADD_EVENTS_URL: string = 'http://localhost:8080/admin-add-events';
   public static DELETE_EVENTS_URL: string = 'http://localhost:8080/admin-delete-event';
   public static TEST_ADMIN_URL: string = 'http://localhost:8080/test-admin';
-  public static FACEBOOK_URL: string = 'http://localhost:8080/facebook/auth';
+  public static FACEBOOK_URL: string = 'http://localhost:8080/user';
   public static CATEGORIES_URL: string = 'http://localhost:8080/categories';
   public static LOGOUT_URL: string = 'http://localhost:8080/logout';
 

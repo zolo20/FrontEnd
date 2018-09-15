@@ -3,7 +3,6 @@ import {FormsModule} from '@angular/forms';
 import { NgModule } from '@angular/core';
 
 import {AccordionModule} from 'primeng/accordion';
-import {ButtonModule} from 'primeng/button';
 import {DialogModule} from 'primeng/dialog';
 import {RouterModule, Routes} from '@angular/router';
 
@@ -24,9 +23,7 @@ import {ToastModule} from 'primeng/toast';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { AdminPageComponent } from './admin-page/admin-page.component';
 import {TableModule} from 'primeng/table';
-import {GMapModule} from 'primeng/gmap';
 import { CookieService } from 'ngx-cookie-service';
-import {MessageService} from 'primeng/api';
 import {CalendarModule} from 'primeng/calendar';
 import {MultiSelectModule} from 'primeng/multiselect';
 import { UserPageComponent } from './user-page/user-page.component';
@@ -39,6 +36,8 @@ import {DropdownModule, InputSwitchModule, InputTextareaModule, TabViewModule} f
 import {CommonModule} from '@angular/common';
 import {CardModule} from 'primeng/card';
 import {AgmCoreModule} from '@agm/core';
+import {MessageService} from 'primeng/api';
+import {ButtonModule} from 'primeng/button';
 
 
 
@@ -78,7 +77,6 @@ const routes = [
     BrowserAnimationsModule,
     ToastModule,
     TableModule,
-    GMapModule,
     CalendarModule,
     MultiSelectModule,
     RouterModule.forRoot(routes),

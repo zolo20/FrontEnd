@@ -4,7 +4,7 @@ p-table {
   height: 465px;
 }
 
-td {
+.rows {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -16,6 +16,7 @@ td:hover {
   white-space: pre-wrap;
   word-wrap: break-word;
 }
+
 
 .info {
   position: absolute;
@@ -250,6 +251,7 @@ input {
 }
 
 #names{
+  color: white;
   float: right;
   margin-right: 15%;
   margin-top: 3%;
@@ -258,4 +260,9 @@ input {
 #logout{
   left:87%;
   top:40px;
+}
+
+agm-map {
+  width:600px;
+  height:500px;
 }

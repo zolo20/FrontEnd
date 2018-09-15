@@ -83,7 +83,6 @@ export class MapContentComponent implements OnInit {
      this.eventService.httpGetMapEvent().subscribe(value => value.forEach(event => {
       this.eventService.addEvent(event);
       let marker = this.addEventOnMap(event);
-       console.log('!!!!!!!! ' + event.categories.length);
       this.eventMarkerArray.push({event: event, marker: marker});
     }));
   }

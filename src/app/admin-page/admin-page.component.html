@@ -1,7 +1,7 @@
 <p-table [columns]="cols" [value]="rows" [rows]="15" [paginator]="true"
          selectionMode="single" [(selection)]="selectedRows" dataKey="id"
          [scrollable]="true" scrollHeight="460px" [loading]="loading"
-         (onRowSelect)="onRowSelect($event, gmap.getMap())">
+         (onRowSelect)="onRowSelect($event)">
   <ng-template pTemplate="caption">
     <div class="ui-helper-clearfix">
       <button type="button" pButton icon="pi pi-refresh" iconPos="right" label="Refresh" style="float:left"
@@ -23,18 +23,17 @@
   </ng-template>
   <ng-template pTemplate="body" let-rowData let-columns="columns">
     <tr [pSelectableRow]="rowData">
-      <td *ngFor="let col of columns | slice:0:1" width="50px">
+      <td class="rows" *ngFor="let col of columns | slice:0:1" width="50px">
         {{rowData[col.field]}}
       </td>
-      <td *ngFor="let col of columns | slice:1">
+      <td class="rows" *ngFor="let col of columns | slice:1">
         {{rowData[col.field]}}
       </td>
       <td class="submit" width="50px">
-        <button pButton type="button" icon="pi pi-plus" class="ui-button-success ui-resizable-column"
-                (click)="updateStatus(rowData)"></button>
+        <p-button type="button" icon="pi pi-plus" class="ui-button-success" (click)="updateStatus(rowData)"></p-button>
       </td>
       <td width="50px">
-        <button pButton type="button" icon="pi pi-minus" (click)="delete(rowData)"></button>
+        <p-button type="button" icon="pi pi-minus" (click)="delete(rowData)"></p-button>
       </td>
     </tr>
   </ng-template>
@@ -64,9 +63,9 @@
 
   <button pButton type="button" label="Save and Exit" id="save" class="info"
           (click)="saveTable(id, label, location, description)"></button>
-  <p-gmap #gmap [options]="options" [overlays]="overlays" (onOverlayClick)="handleOverlayClick($event)"
-          [style]="{'width':'600px','height':'500px'}">
-  </p-gmap>
+  <agm-map [latitude]="lat" [longitude]="lng" [zoom]=16>
+    <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+  </agm-map>
   <p-toast position="top-left" [baseZIndex]="100"></p-toast>
 </p-dialog>
 
@@ -101,15 +100,16 @@
   </label>
   <button pButton type="button" label="Add Event" id="addEv" class="info"
           (click)="sendEvent(label, startEvent, endEvent, lat, lng, location, description)"></button>
-  <p-gmap [style]="{'width':'600px','height':'500px'}" [options]="options" [overlays]="overlays"
-          (onMapClick)="handleMapClick($event)"></p-gmap>
-  <p-toast position="top-left" [baseZIndex]="100"></p-toast>
+  <agm-map [latitude]=55.667593806267654 [longitude]=37.62490465785959 [zoom]=10 (mapClick)="handleMapClick($event)">
+    <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+  </agm-map>
+  <p-toast position="top-left" [baseZIndex]="100" [styleClass]="ui-messages-success"></p-toast>
 </p-dialog>
 
 <button id="logout" type="button" pButton icon="pi pi-power-off" iconPos="right" label="Log Out"
         style="float:left"
         (click)="logout()"></button>
-<h1 id="names">{{name}} {{surname}}</h1>
+<h2 id="names">{{name}} {{surname}}</h2>
 
 <p-toast position="top-left" [baseZIndex]="100"></p-toast>
 

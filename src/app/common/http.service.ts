@@ -4,10 +4,12 @@ import {Constants} from './constants';
 import {Router} from '@angular/router';
 import {Events} from './Events';
 import {Categories} from './Categories';
+import {MapEvent} from '../user-page/map-content/classes/MapEvent';
+import {map} from 'rxjs/operators';
+import {LatLngLiteral} from '@agm/core';
 
 @Injectable()
 export class HttpService {
-
   constructor(private http: HttpClient, private router: Router) {
   }
 

@@ -7,8 +7,6 @@ import {CookieService} from 'ngx-cookie-service';
 import {Categories} from '../common/Categories';
 import {SelectItem} from '../common/selectitem';
 
-declare var google: any;
-
 @Component({
   selector: 'app-admin-page',
   templateUrl: './admin-page.component.html',
@@ -25,7 +23,6 @@ export class AdminPageComponent implements OnInit {
   options: any;
   overlays: any[];
   selectedRows: any[];
-  infoWindow: any;
   loading: boolean;
   displayErr: boolean;
 
@@ -84,8 +81,6 @@ export class AdminPageComponent implements OnInit {
       });
     }).catch(err => this.displayErr = true);
 
-    this.infoWindow = new google.maps.InfoWindow();
-
     this.cols = [
       {field: 'id', header: 'Id'},
       {field: 'label', header: 'Label'},
@@ -98,7 +93,7 @@ export class AdminPageComponent implements OnInit {
     ];
   }
 
-  onRowSelect(event, map) {
+  onRowSelect(event) {
     this.httpService.getCategories().then(categories => {
       categories.map(category => {
         if (!this.categories.some(categ => categ.label === category.categoryName)) {
@@ -106,20 +101,6 @@ export class AdminPageComponent implements OnInit {
         }
       });
     });
-
-    this.options = {
-      center: {lat: event.data.lat, lng: event.data.lng},
-      zoom: 16
-    };
-
-    this.overlays = [
-      new google.maps.Marker({position: {lat: event.data.lat, lng: event.data.lng}, title: event.data.label})
-    ];
-
-    if (map != undefined) {
-      map.setCenter({lat: event.data.lat, lng: event.data.lng});
-      map.setZoom(16);
-    }
 
     this.id = event.data.id;
     this.label = event.data.label;
@@ -139,17 +120,6 @@ export class AdminPageComponent implements OnInit {
     localStorage.removeItem('token');
     this.cookieService.deleteAll();
     this.router.navigateByUrl('/home');
-  }
-
-  handleOverlayClick(event) {
-    let isMarker = event.overlay.getTitle != undefined;
-
-    if (isMarker) {
-      let title = event.overlay.getTitle();
-      this.infoWindow.setContent('' + title + '');
-      this.infoWindow.open(event.map, event.overlay);
-      event.map.setCenter(event.overlay.getPosition());
-    }
   }
 
   cancel() {
@@ -176,7 +146,7 @@ export class AdminPageComponent implements OnInit {
 
   updateStatus(rowData) {
     if (this.selectedCategories.length == 0) {
-      this.messageService.add({severity: 'error', summary: 'Categories', detail: 'Add an event to the categories'});
+      this.messageService.add({severity: 'ui-messages-error', summary: 'Categories', detail: 'Add an event to the categories'});
     } else {
       this.loading = true;
       console.log(rowData);
@@ -189,7 +159,7 @@ export class AdminPageComponent implements OnInit {
       };
 
       this.httpService.putStatusEvent(request).subscribe(res => {
-        this.messageService.add({severity: 'success', summary: 'Add', detail: 'Event successfully added'});
+        this.messageService.add({severity: 'ui-messages-success', summary: 'Add', detail: 'Event successfully added'});
         let index = this.rows.indexOf(rowData, 0);
         if (index > -1) {
           this.rows.splice(index, 1);
@@ -279,21 +249,13 @@ export class AdminPageComponent implements OnInit {
     this.location = '';
     this.description = '';
     this.selectedCategories = [];
-
-    this.options = {
-      center: {lat: 55.72950690736556, lng: 37.64687731410959},
-      zoom: 6
-    };
     this.displayDialogAdd = true;
   }
 
   handleMapClick(event) {
-    this.overlays = [];
-    this.lat = event.latLng.lat();
-    this.lng = event.latLng.lng();
-    this.overlays = [
-      (new google.maps.Marker({position: {lat: event.latLng.lat(), lng: event.latLng.lng()}}))
-    ];
+    this.lat = event.coords.lat;
+    this.lng = event.coords.lng;
+    console.log(event);
   }
 
   sendEvent(label, startEvent, endEvent, lat, lng, location, description) {
@@ -314,10 +276,10 @@ export class AdminPageComponent implements OnInit {
       };
 
       this.httpService.addEvent(request).subscribe(res => {
-        this.messageService.add({severity: 'success', summary: 'Add', detail: 'Event to add'});
+        this.messageService.add({severity: 'ui-messages-success', summary: 'Add', detail: 'Event to add'});
       }, err => {
         if (err.status == 400) {
-          this.messageService.add({severity: 'error', summary: 'Format date', detail: 'Expected format dd.MM.yyyy'});
+          this.messageService.add({severity: 'ui-messages-error', summary: 'Format date', detail: 'Expected format dd.MM.yyyy'});
         } else {
           this.displayErr = true;
         }
