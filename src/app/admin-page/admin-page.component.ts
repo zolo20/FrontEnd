@@ -75,8 +75,8 @@ export class AdminPageComponent implements OnInit {
         let dateEnd = new Date(date.end);
         let dateCreation = new Date(date.creation);
 
-        date.start = (dateStart.getDate() < 10 ? '0'.concat(dateStart.getDate().toString()) : dateStart.getDate()) + '.' + (dateStart.getMonth() + 1 < 10 ? '0'.concat((dateStart.getMonth() + 1).toString()) : dateStart.getMonth() + 1) + '.' + dateStart.getFullYear();
-        date.end = (dateEnd.getDate() < 10 ? '0'.concat(dateEnd.getDate().toString()) : dateEnd.getDate()) + '.' + (dateEnd.getMonth() + 1 < 10 ? '0'.concat((dateEnd.getMonth() + 1).toString()) : dateEnd.getMonth() + 1) + '.' + dateEnd.getFullYear();
+        date.start = (dateStart.getDate() < 10 ? '0'.concat(dateStart.getDate().toString()) : dateStart.getDate()) + '.' + (dateStart.getMonth() + 1 < 10 ? '0'.concat((dateStart.getMonth() + 1).toString()) : dateStart.getMonth() + 1) + '.' + dateStart.getFullYear() + ", " + ((dateStart.getHours() + 3 == 24) ? '00' : (dateStart.getHours() + 3 < 10 ? '0'.concat((dateStart.getHours() + 3).toString()) : (dateStart.getHours() + 3))) + ":" + (dateStart.getMinutes() < 10 ? '0'.concat(dateStart.getMinutes().toString()) : dateStart.getMinutes());
+        date.end = (dateEnd.getDate() < 10 ? '0'.concat(dateEnd.getDate().toString()) : dateEnd.getDate()) + '.' + (dateEnd.getMonth() + 1 < 10 ? '0'.concat((dateEnd.getMonth() + 1).toString()) : dateEnd.getMonth() + 1) + '.' + dateEnd.getFullYear() + ", " + ((dateStart.getHours() + 3 == 24) ? '00' :(dateEnd.getHours() + 3 < 10 ? '0'.concat((dateEnd.getHours() + 3).toString()) : (dateEnd.getHours() + 3))) + ":" + (dateEnd.getMinutes() < 10 ? '0'.concat(dateEnd.getMinutes().toString()) : dateEnd.getMinutes());
         date.creation = (dateCreation.getDate() < 10 ? '0'.concat(dateCreation.getDate().toString()) : dateCreation.getDate()) + '.' + (dateCreation.getMonth() + 1 < 10 ? '0'.concat((dateCreation.getMonth() + 1).toString()) : dateCreation.getMonth()) + '.' + dateCreation.getFullYear();
       });
     }).catch(err => this.displayErr = true);
@@ -145,11 +145,10 @@ export class AdminPageComponent implements OnInit {
   }
 
   updateStatus(rowData) {
-    if (this.selectedCategories.length == 0) {
-      this.messageService.add({severity: 'ui-messages-error', summary: 'Categories', detail: 'Add an event to the categories'});
+    if (rowData.categories.length == 0) {
+      this.messageService.add({severity: 'error', summary: 'Categories', detail: 'Add an event to the categories'});
     } else {
       this.loading = true;
-      console.log(rowData);
       const request = {
         id: rowData.id,
         label: rowData.label,
@@ -159,7 +158,7 @@ export class AdminPageComponent implements OnInit {
       };
 
       this.httpService.putStatusEvent(request).subscribe(res => {
-        this.messageService.add({severity: 'ui-messages-success', summary: 'Add', detail: 'Event successfully added'});
+        this.messageService.add({severity: 'success', summary: 'Add', detail: 'Event successfully added'});
         let index = this.rows.indexOf(rowData, 0);
         if (index > -1) {
           this.rows.splice(index, 1);
@@ -219,8 +218,8 @@ export class AdminPageComponent implements OnInit {
         const dateEnd = new Date(date.end);
         const dateCreation = new Date(date.creation);
 
-        date.start = (dateStart.getDate() < 10 ? '0'.concat(dateStart.getDate().toString()) : dateStart.getDate()) + '.' + (dateStart.getMonth() + 1 < 10 ? '0'.concat((dateStart.getMonth() + 1).toString()) : dateStart.getMonth() + 1) + '.' + dateStart.getFullYear();
-        date.end = (dateEnd.getDate() < 10 ? '0'.concat(dateEnd.getDate().toString()) : dateEnd.getDate()) + '.' + (dateEnd.getMonth() + 1 < 10 ? '0'.concat((dateEnd.getMonth() + 1).toString()) : dateEnd.getMonth() + 1) + '.' + dateEnd.getFullYear();
+        date.start = (dateStart.getDate() < 10 ? '0'.concat(dateStart.getDate().toString()) : dateStart.getDate()) + '.' + (dateStart.getMonth() + 1 < 10 ? '0'.concat((dateStart.getMonth() + 1).toString()) : dateStart.getMonth() + 1) + '.' + dateStart.getFullYear() + ", " + ((dateStart.getHours() + 3 == 24) ? '00' : (dateStart.getHours() + 3 < 10 ? '0'.concat((dateStart.getHours() + 3).toString()) : (dateStart.getHours() + 3))) + ":" + (dateStart.getMinutes() < 10 ? '0'.concat(dateStart.getMinutes().toString()) : dateStart.getMinutes());
+        date.end = (dateEnd.getDate() < 10 ? '0'.concat(dateEnd.getDate().toString()) : dateEnd.getDate()) + '.' + (dateEnd.getMonth() + 1 < 10 ? '0'.concat((dateEnd.getMonth() + 1).toString()) : dateEnd.getMonth() + 1) + '.' + dateEnd.getFullYear() + ", " + ((dateStart.getHours() + 3 == 24) ? '00' :(dateEnd.getHours() + 3 < 10 ? '0'.concat((dateEnd.getHours() + 3).toString()) : (dateEnd.getHours() + 3))) + ":" + (dateEnd.getMinutes() < 10 ? '0'.concat(dateEnd.getMinutes().toString()) : dateEnd.getMinutes());
         date.creation = (dateCreation.getDate() < 10 ? '0'.concat(dateCreation.getDate().toString()) : dateCreation.getDate()) + '.' + (dateCreation.getMonth() + 1 < 10 ? '0'.concat((dateCreation.getMonth() + 1).toString()) : dateCreation.getMonth()) + '.' + dateCreation.getFullYear();
       });
 
@@ -276,10 +275,10 @@ export class AdminPageComponent implements OnInit {
       };
 
       this.httpService.addEvent(request).subscribe(res => {
-        this.messageService.add({severity: 'ui-messages-success', summary: 'Add', detail: 'Event to add'});
+        this.messageService.add({severity: 'success', summary: 'Add', detail: 'Event to add'});
       }, err => {
         if (err.status == 400) {
-          this.messageService.add({severity: 'ui-messages-error', summary: 'Format date', detail: 'Expected format dd.MM.yyyy'});
+          this.messageService.add({severity: 'error', summary: 'Format date', detail: 'Expected format dd.MM.yyyy'});
         } else {
           this.displayErr = true;
         }
